@@ -59,12 +59,12 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#cheap-module-source-map'
 }
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
   module.exports.output.publicPath = './dist/';
+  module.exports.output.filename = 'build.[hash].js';
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
@@ -79,6 +79,10 @@ if (process.env.NODE_ENV === 'production') {
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
+    }),
+    new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: './build/temp/index.html'
     })
   ])
 }
